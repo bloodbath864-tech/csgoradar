@@ -9,7 +9,7 @@
     <canvas id="radar" width="512" height="512" style="z-index:1000;position:relative;" />
 </body>
 <script>
-    const ws = new WebSocket("wss://" + window.location.hostname + ":6969");
+    const ws = new WebSocket("wss://" + window.location.hostname);
     const canvas = document.getElementById("radar");
     const ctx = canvas.getContext("2d");
     const map = document.getElementById("map");
