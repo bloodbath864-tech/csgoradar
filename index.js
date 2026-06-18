@@ -10,11 +10,14 @@ const targetName = "web_backend.exe";
 
 const express = require("express");
 const app = express();
-const web_port = process.env.PORT || 3000; // Render автоматически назначит порт
-const ws_port = 6969;
+const web_port = process.env.PORT || 3000;
 
+// Create HTTP server
+const server = require('http').createServer(app);
+
+// WebSocket server on the same HTTP server
 const wss = new WebSocket.Server({
-    port: ws_port
+    server: server
 });
 
 wss.on("connection", (ws) => {
@@ -123,8 +126,8 @@ app.post("/update", express.json(), (req, res) => {
     res.json({success: true});
 });
 
-app.listen(web_port, () => {
+server.listen(web_port, () => {
     console.log(`Radar Host listening on port ${web_port}`);
-    console.log(`WebSocket server listening on port ${ws_port}`);
+    console.log(`WebSocket server on same port`);
     console.log(`Open http://localhost:${web_port} in your browser`);
 });
