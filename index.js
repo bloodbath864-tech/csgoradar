@@ -109,6 +109,20 @@ app.get("/data/:dataId", (req, res) => {
         res.status(404).send({error: "map not found"});
 });
 
+// API endpoint to receive data from Provider via HTTP POST
+app.post("/update", express.json(), (req, res) => {
+    const data = req.body;
+    
+    // Broadcast to all WebSocket clients
+    wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(data));
+        }
+    });
+    
+    res.json({success: true});
+});
+
 app.listen(web_port, () => {
     console.log(`Radar Host listening on port ${web_port}`);
     console.log(`WebSocket server listening on port ${ws_port}`);
